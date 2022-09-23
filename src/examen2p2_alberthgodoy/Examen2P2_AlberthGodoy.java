@@ -8,6 +8,7 @@ package examen2p2_alberthgodoy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -445,9 +446,43 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
 
     private void jButton_SIMULARMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_SIMULARMouseClicked
         Carros carroSelect = (Carros) jComboBox_AutoReparar.getSelectedItem();
+        Empleado empleadoSelect = (Empleado) jComboBox_EmpleadoReparar.getSelectedItem();
         jProgressBar_CargaSimulacion.setMaximum((int) carroSelect.getCostoReparacion());
-        HiloProgressBar hilo = new HiloProgressBar(jProgressBar_CargaSimulacion,carroSelect);
+        HiloProgressBar hilo = new HiloProgressBar(jProgressBar_CargaSimulacion, carroSelect);
         hilo.start();
+        Random rnd = new Random();
+        int probabilidad = empleadoSelect.getCantCarrosreparadoExito();
+        if (probabilidad == 0) {
+            
+        } else if (probabilidad > 0 && probabilidad <= 5) {
+            int numRandom = rnd.nextInt(100);
+            if (numRandom > 70) {
+
+            } else {
+                JOptionPane.showMessageDialog(jPanel3, "Fallo la reparacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (probabilidad > 5 && probabilidad <= 15) {
+            int numRandom = rnd.nextInt(100);
+            if (numRandom > 78) {
+
+            } else {
+                JOptionPane.showMessageDialog(jPanel3, "Fallo la reparacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (probabilidad > 15 && probabilidad <= 30) {
+            int numRandom = rnd.nextInt(100);
+            if (numRandom > 87) {
+
+            } else {
+                JOptionPane.showMessageDialog(jPanel3, "Fallo la reparacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (probabilidad > 30) {
+            int numRandom = rnd.nextInt(100);
+            if (numRandom > 93) {
+
+            } else {
+                JOptionPane.showMessageDialog(jPanel3, "Fallo la reparacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jButton_SIMULARMouseClicked
     public void cargarJtableEmpleado(JTable jTable, ArrayList<Empleado> listaEmpleados) {
         //Agarrar el modelo

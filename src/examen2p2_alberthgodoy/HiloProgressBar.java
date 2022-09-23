@@ -1,6 +1,5 @@
 package examen2p2_alberthgodoy;
 
-import java.util.Date;
 import javax.swing.JProgressBar;
 
 /**
@@ -39,8 +38,8 @@ public class HiloProgressBar extends Thread {
     public void run() {
         double cont = carroSelected.getCostoReparacion();
         while (vive) {
-            for (int i = 120; i < cont+1; i += 1000) {
-                progressbar.setValue(progressbar.getValue() + i);
+            for (int i = 0; i < cont+1; i += 1000) {
+                progressbar.setValue(progressbar.getValue() + 1000);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {

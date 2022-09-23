@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  * @author godoy
  */
 public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
-    
+
     private ArrayList<Empleado> listaEmpleado = new ArrayList();
     private ArrayList<Carros> listaCarros = new ArrayList();
     private SimpleDateFormat dFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -97,6 +97,8 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jComboBox_EmpleadoReparar = new javax.swing.JComboBox<>();
         jComboBox_AutoReparar = new javax.swing.JComboBox<>();
+        jProgressBar_CargaSimulacion = new javax.swing.JProgressBar();
+        jButton_SIMULAR = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -247,26 +249,20 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
 
         jTabbedPane.addTab("Modificar Carro", jPanel3);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jComboBox_EmpleadoReparar, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox_AutoReparar, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox_EmpleadoReparar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox_AutoReparar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(473, Short.MAX_VALUE))
-        );
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.add(jComboBox_EmpleadoReparar, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 36, 349, -1));
+
+        jPanel1.add(jComboBox_AutoReparar, new org.netbeans.lib.awtextra.AbsoluteConstraints(389, 36, 402, -1));
+        jPanel1.add(jProgressBar_CargaSimulacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 104, 769, 29));
+
+        jButton_SIMULAR.setText("SIMULAR");
+        jButton_SIMULAR.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_SIMULARMouseClicked(evt);
+            }
+        });
+        jPanel1.add(jButton_SIMULAR, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 70, -1));
 
         jTabbedPane.addTab("Simulacion", jPanel1);
 
@@ -306,7 +302,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
                 if (empleado.getNumID().equals(numID)) {
                     throw new Exception("Ya esta ese id");
                 }
-                
+
             }
             //Crear Empleaod
             listaEmpleado.add(new Empleado(nombre, edad, numID, carrosExitos));
@@ -369,7 +365,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
                 if (carros.getID().equals(numID)) {
                     throw new Exception("Ya esta ese id");
                 }
-                
+
             }
             //Crear Carro
             listaCarros.add(new Carros(numID, marca, modelo, fechaReparacion, estadoReparacion, costoReparacion));
@@ -444,7 +440,15 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         admin.cargarArchivoEmpleado();
         listaEmpleado = admin.getListaEmpleado();
         cargarJcomboBoxEmpleados(jComboBox_EmpleadoReparar, listaEmpleado);
+        cargarJcomboBoxCarrosEspera(jComboBox_AutoReparar, listaCarros);
     }//GEN-LAST:event_jTabbedPaneStateChanged
+
+    private void jButton_SIMULARMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_SIMULARMouseClicked
+        Carros carroSelect = (Carros) jComboBox_AutoReparar.getSelectedItem();
+        jProgressBar_CargaSimulacion.setMaximum((int) carroSelect.getCostoReparacion());
+        HiloProgressBar hilo = new HiloProgressBar(jProgressBar_CargaSimulacion,carroSelect);
+        hilo.start();
+    }//GEN-LAST:event_jButton_SIMULARMouseClicked
     public void cargarJtableEmpleado(JTable jTable, ArrayList<Empleado> listaEmpleados) {
         //Agarrar el modelo
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
@@ -463,7 +467,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         jTable.repaint();
         jTable.updateUI();
     }
-    
+
     public void cargarJtableCarros(JTable jTable, ArrayList<Carros> listaCarros) {
         //Agarrar el modelo
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
@@ -483,7 +487,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         jTable.repaint();
         jTable.updateUI();
     }
-    
+
     public void cargarJcomboBoxCarros(JComboBox jCombo, ArrayList<Carros> listaCarros) {
         DefaultComboBoxModel modelCombo = new DefaultComboBoxModel();
         for (int i = 0; i < listaCarros.size(); i++) {
@@ -491,10 +495,23 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         }
         jCombo.setModel(modelCombo);
     }
+
     public void cargarJcomboBoxEmpleados(JComboBox jCombo, ArrayList<Empleado> listaEmpleados) {
         DefaultComboBoxModel modelCombo = new DefaultComboBoxModel();
         for (int i = 0; i < listaEmpleados.size(); i++) {
             modelCombo.addElement(listaEmpleados.get(i));
+        }
+        jCombo.setModel(modelCombo);
+    }
+
+    public void cargarJcomboBoxCarrosEspera(JComboBox jCombo, ArrayList<Carros> listaCarros) {
+        DefaultComboBoxModel modelCombo = new DefaultComboBoxModel();
+        for (int i = 0; i < listaCarros.size(); i++) {
+            Carros carrosSelected = listaCarros.get(i);
+            if (carrosSelected.getEstadoVehiculo().equals("EN ESPERA")) {
+                modelCombo.addElement(listaCarros.get(i));
+            }
+
         }
         jCombo.setModel(modelCombo);
     }
@@ -539,6 +556,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     private javax.swing.JButton jButton_CrearCarros;
     private javax.swing.JButton jButton_CrearEmpleado;
     private javax.swing.JButton jButton_EliminarEmpleado;
+    private javax.swing.JButton jButton_SIMULAR;
     private javax.swing.JButton jButton_SeleccionarCarro;
     private javax.swing.JComboBox<String> jComboBox_AutoReparar;
     private javax.swing.JComboBox<String> jComboBox_EmpleadoReparar;
@@ -563,6 +581,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel_CrudEmpleados;
+    private javax.swing.JProgressBar jProgressBar_CargaSimulacion;
     private javax.swing.JScrollPane jScrollPane_Empleados;
     private javax.swing.JScrollPane jScrollPane_Empleados1;
     private javax.swing.JSpinner jSpinner_Edad;

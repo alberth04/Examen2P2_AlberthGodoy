@@ -64,4 +64,10 @@ public class Empleado implements Serializable{
         this.cantCarrosreparadoExito = cantCarrosreparadoExito;
     }
 
+    @Override
+    public String toString() {
+        return "Empleado{" + "nombre=" + nombre + ", edad=" + edad + ", numID=" + numID + ", cantCarrosreparadoExito=" + cantCarrosreparadoExito + '}';
+    }
+    
+    
 }

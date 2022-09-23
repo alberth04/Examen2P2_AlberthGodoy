@@ -97,7 +97,7 @@ public class Carros implements Serializable{
     }
 
     public void setID(String ID) throws Exception {
-        if (ID.matches("[0-9]+")) {
+        if (!ID.matches("[0-9]+")) {
             throw new Exception("El id solo pueden ser digitos");
         }
         this.ID = ID;

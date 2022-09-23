@@ -55,6 +55,13 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         jButton_CrearEmpleado = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField_Marca = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField_Marca1 = new javax.swing.JTextField();
+        jTextField_Marca2 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -112,6 +119,22 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         jTabbedPane.addTab("Crear / Eliminar Empleados", jPanel_CrudEmpleados);
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setText("Crear Carros");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 80, 20));
+
+        jLabel7.setText("Marca");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 40, -1));
+        jPanel2.add(jTextField_Marca, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 150, 30));
+
+        jLabel8.setText("Modelo");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, 40, -1));
+        jPanel2.add(jTextField_Marca1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 150, 30));
+        jPanel2.add(jTextField_Marca2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, 150, 30));
+
+        jLabel9.setText("Num ID");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 40, 40, -1));
+
         jTabbedPane.addTab("Crear/Eliminar Carros", jPanel2);
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -252,6 +275,10 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel_CrudEmpleados;
@@ -259,6 +286,9 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinner_Edad;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JTable jTable_Empleados;
+    private javax.swing.JTextField jTextField_Marca;
+    private javax.swing.JTextField jTextField_Marca1;
+    private javax.swing.JTextField jTextField_Marca2;
     private javax.swing.JTextField jTextField_NombreEmpleado;
     private javax.swing.JTextField jTextField_NumIdentidad;
     // End of variables declaration//GEN-END:variables

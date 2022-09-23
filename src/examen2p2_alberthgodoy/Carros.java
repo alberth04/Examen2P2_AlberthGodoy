@@ -1,6 +1,7 @@
 package examen2p2_alberthgodoy;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -10,11 +11,23 @@ public class Carros implements Serializable{
     private String ID;
     private String Marca;
     private String Modelo;
-    private String fechaFabricacion;
+    private Date fechaFabricacion;
     private String estadoVehiculo;
     private double costoReparacion;
 
-    public Carros(String ID, String Marca, String Modelo, String fechaFabricacion, String estadoVehiculo, double costoReparacion) {
+    public Carros(String ID, String Marca, String Modelo, Date fechaFabricacion, String estadoVehiculo, double costoReparacion) throws Exception {
+         if (!Marca.matches("[A-Za-z0-9]+")) {
+            throw new Exception("Marca solo puede ser letras");
+        }
+        if (!Modelo.matches("[A-Za-z0-9]+")) {
+            throw new Exception("Modelo solo puede ser letras");
+        }
+        if (costoReparacion < 0) {
+            throw new Exception("El costo no puede ser negativo");
+        }
+        if (!ID.matches("[0-9]+")) {
+            throw new Exception("El id solo pueden ser digitos");
+        }
         this.ID = ID;
         this.Marca = Marca;
         this.Modelo = Modelo;
@@ -22,6 +35,8 @@ public class Carros implements Serializable{
         this.estadoVehiculo = estadoVehiculo;
         this.costoReparacion = costoReparacion;
     }
+
+    
     
 
     
@@ -30,7 +45,10 @@ public class Carros implements Serializable{
         return Marca;
     }
 
-    public void setMarca(String Marca) {
+    public void setMarca(String Marca) throws Exception {
+        if (!Marca.matches("[A-Za-z0-9]+")) {
+            throw new Exception("Marca solo puede ser letras");
+        }
         this.Marca = Marca;
     }
 
@@ -38,17 +56,22 @@ public class Carros implements Serializable{
         return Modelo;
     }
 
-    public void setModelo(String Modelo) {
+    public void setModelo(String Modelo) throws Exception {
+        if (!Modelo.matches("[A-Za-z0-9]+")) {
+            throw new Exception("Modelo solo puede ser letras");
+        }
         this.Modelo = Modelo;
     }
 
-    public String getFechaFabricacion() {
+    public Date getFechaFabricacion() {
         return fechaFabricacion;
     }
 
-    public void setFechaFabricacion(String fechaFabricacion) {
+    public void setFechaFabricacion(Date fechaFabricacion) {
         this.fechaFabricacion = fechaFabricacion;
     }
+
+    
 
     public String getEstadoVehiculo() {
         return estadoVehiculo;
@@ -62,7 +85,10 @@ public class Carros implements Serializable{
         return costoReparacion;
     }
 
-    public void setCostoReparacion(double costoReparacion) {
+    public void setCostoReparacion(double costoReparacion) throws Exception {
+        if (costoReparacion < 0) {
+            throw new Exception("El costo no puede ser negativo");
+        }
         this.costoReparacion = costoReparacion;
     }
 
@@ -70,7 +96,10 @@ public class Carros implements Serializable{
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(String ID) throws Exception {
+        if (ID.matches("[0-9]+")) {
+            throw new Exception("El id solo pueden ser digitos");
+        }
         this.ID = ID;
     }
     

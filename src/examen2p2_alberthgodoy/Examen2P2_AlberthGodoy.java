@@ -5,7 +5,9 @@
  */
 package examen2p2_alberthgodoy;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -18,6 +20,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
 
     private ArrayList<Empleado> listaEmpleado = new ArrayList();
     private ArrayList<Carros> listaCarros = new ArrayList();
+    private SimpleDateFormat dFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * Creates new form Examen2P2_AlberthGodoy
@@ -29,6 +32,11 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         admin.cargarArchivoEmpleado();
         listaEmpleado = admin.getListaEmpleado();
         cargarJtableEmpleado(jTable_Empleados, listaEmpleado);
+        listaCarros = new ArrayList();
+        admin = new administrarEmpleado("./Nube/carros.alex");
+        admin.cargarArchivoCarros();
+        listaCarros = admin.getListaCarros();
+        cargarJtableCarros(jTable_Carros, listaCarros);
     }
 
     /**
@@ -53,15 +61,23 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         jScrollPane_Empleados = new javax.swing.JScrollPane();
         jTable_Empleados = new javax.swing.JTable();
         jButton_CrearEmpleado = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jButton_EliminarEmpleado = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jTextField_Marca = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField_Marca1 = new javax.swing.JTextField();
-        jTextField_Marca2 = new javax.swing.JTextField();
+        jTextField_Modelo = new javax.swing.JTextField();
+        jTextField_CostoReparacion = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField_NumID = new javax.swing.JTextField();
+        jButton_CrearCarros = new javax.swing.JButton();
+        jScrollPane_Empleados1 = new javax.swing.JScrollPane();
+        jTable_Carros = new javax.swing.JTable();
+        jButton_EliminarCarros = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jTextField_Fecha = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -108,13 +124,13 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         });
         jPanel_CrudEmpleados.add(jButton_CrearEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 60, 100, 30));
 
-        jButton1.setText("Eliminar Empleado");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButton_EliminarEmpleado.setText("Eliminar Empleado");
+        jButton_EliminarEmpleado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                jButton_EliminarEmpleadoMouseClicked(evt);
             }
         });
-        jPanel_CrudEmpleados.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 120, 30));
+        jPanel_CrudEmpleados.add(jButton_EliminarEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 120, 30));
 
         jTabbedPane.addTab("Crear / Eliminar Empleados", jPanel_CrudEmpleados);
 
@@ -129,11 +145,42 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
 
         jLabel8.setText("Modelo");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, 40, -1));
-        jPanel2.add(jTextField_Marca1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 150, 30));
-        jPanel2.add(jTextField_Marca2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, 150, 30));
+        jPanel2.add(jTextField_Modelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 150, 30));
+        jPanel2.add(jTextField_CostoReparacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 150, 30));
 
-        jLabel9.setText("Num ID");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 40, 40, -1));
+        jLabel9.setText("Costo de Reparacion");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 120, 120, -1));
+
+        jLabel10.setText("Num ID");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 40, -1));
+        jPanel2.add(jTextField_NumID, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 150, 30));
+
+        jButton_CrearCarros.setText("Crear Carros");
+        jButton_CrearCarros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_CrearCarrosMouseClicked(evt);
+            }
+        });
+        jPanel2.add(jButton_CrearCarros, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 70, 90, 30));
+
+        jTable_Carros.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Marca", "Modelo", "Año Fabricacion", "Estado Vehiculo", "Costo Reparacion"
+            }
+        ));
+        jScrollPane_Empleados1.setViewportView(jTable_Carros);
+
+        jPanel2.add(jScrollPane_Empleados1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 770, 330));
+
+        jButton_EliminarCarros.setText("Eliminar Carros");
+        jPanel2.add(jButton_EliminarCarros, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 150, 110, 30));
+
+        jLabel11.setText("Fecha");
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 40, 40, -1));
+        jPanel2.add(jTextField_Fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 150, 30));
 
         jTabbedPane.addTab("Crear/Eliminar Carros", jPanel2);
 
@@ -190,7 +237,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_CrearEmpleadoMouseClicked
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void jButton_EliminarEmpleadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_EliminarEmpleadoMouseClicked
         if (jTable_Empleados.getSelectedRowCount() == 1) {
             listaEmpleado = new ArrayList();
             administrarEmpleado admin = new administrarEmpleado("./Nube/empleado.alex");
@@ -212,7 +259,44 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(jPanel_CrudEmpleados, "No selecciono nada", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_jButton_EliminarEmpleadoMouseClicked
+
+    private void jButton_CrearCarrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_CrearCarrosMouseClicked
+        //Crear Carross
+
+        try {
+            //Cargar archivos
+            listaCarros = new ArrayList();
+            administrarEmpleado admin = new administrarEmpleado("./Nube/carros.alex");
+            admin.cargarArchivoCarros();
+            listaCarros = admin.getListaCarros();
+            String marca = jTextField_Marca.getText();
+            String modelo = jTextField_Modelo.getText();
+            String numID = jTextField_NumID.getText();
+            double costoReparacion = Integer.parseInt(jTextField_CostoReparacion.getText());
+            String estadoReparacion = "EN ESPERA";
+            String fecha = jTextField_Fecha.getText();
+            //Convertir a Date 
+            Date fechaReparacion = dFormat.parse(fecha);
+            //Validar
+            for (Carros carros : listaCarros) {
+                if (carros.getID().equals(numID)) {
+                    throw new Exception("Ya esta ese id");
+                }
+
+            }
+            //Crear Carro
+            listaCarros.add(new Carros(numID, marca, modelo, fechaReparacion, estadoReparacion, costoReparacion));
+
+            //Cargar Archivo
+            admin.setListaCarros(listaCarros);
+            admin.escribirArchivoCarros();
+            cargarJtableCarros(jTable_Carros, listaCarros);
+            JOptionPane.showMessageDialog(jPanel_CrudEmpleados, "Carro Creado", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(jPanel_CrudEmpleados, e, "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton_CrearCarrosMouseClicked
     public void cargarJtableEmpleado(JTable jTable, ArrayList<Empleado> listaEmpleados) {
         //Agarrar el modelo
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
@@ -224,6 +308,26 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
                 empleadoSelected.getEdad(),
                 empleadoSelected.getNumID(),
                 empleadoSelected.getCantCarrosreparadoExito()
+            };
+            model.addRow(newRow);
+        }
+        jTable.setModel(model);
+        jTable.repaint();
+        jTable.updateUI();
+    }
+
+    public void cargarJtableCarros(JTable jTable, ArrayList<Carros> listaCarros) {
+        //Agarrar el modelo
+        DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+        model.setRowCount(0);
+        for (int i = 0; i < listaCarros.size(); i++) {
+            Carros carroSelected = listaCarros.get(i);
+            Object[] newRow = {
+                carroSelected.getMarca(),
+                carroSelected.getModelo(),
+                dFormat.format(carroSelected.getFechaFabricacion()),
+                carroSelected.getEstadoVehiculo(),
+                carroSelected.getCostoReparacion()
             };
             model.addRow(newRow);
         }
@@ -268,9 +372,13 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton_CrearCarros;
     private javax.swing.JButton jButton_CrearEmpleado;
+    private javax.swing.JButton jButton_EliminarCarros;
+    private javax.swing.JButton jButton_EliminarEmpleado;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -283,13 +391,17 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel_CrudEmpleados;
     private javax.swing.JScrollPane jScrollPane_Empleados;
+    private javax.swing.JScrollPane jScrollPane_Empleados1;
     private javax.swing.JSpinner jSpinner_Edad;
     private javax.swing.JTabbedPane jTabbedPane;
+    private javax.swing.JTable jTable_Carros;
     private javax.swing.JTable jTable_Empleados;
+    private javax.swing.JTextField jTextField_CostoReparacion;
+    private javax.swing.JTextField jTextField_Fecha;
     private javax.swing.JTextField jTextField_Marca;
-    private javax.swing.JTextField jTextField_Marca1;
-    private javax.swing.JTextField jTextField_Marca2;
+    private javax.swing.JTextField jTextField_Modelo;
     private javax.swing.JTextField jTextField_NombreEmpleado;
+    private javax.swing.JTextField jTextField_NumID;
     private javax.swing.JTextField jTextField_NumIdentidad;
     // End of variables declaration//GEN-END:variables
 }

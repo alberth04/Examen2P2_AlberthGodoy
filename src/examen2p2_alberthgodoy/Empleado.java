@@ -1,10 +1,12 @@
 package examen2p2_alberthgodoy;
 
+import java.io.Serializable;
+
 /**
  *
  * @author godoy
  */
-public class Empleado {
+public class Empleado implements Serializable{
 
     private String nombre;
     private int edad;
@@ -12,11 +14,11 @@ public class Empleado {
     private int cantCarrosreparadoExito;
 
     public Empleado(String nombre, int edad, String numID, int cantCarrosreparadoExito) throws Exception {
-        if (nombre.matches("[A-Za-z]+")) {
+        if (!nombre.matches("[A-Za-z]+")) {
             throw new Exception("Solo se aceptan letras");
         }
-        if (numID.matches("[A-Za-z]+")) {
-            throw new Exception("Solo se aceptan letras");
+        if (!numID.matches("[0-9]+")) {
+            throw new Exception("Solo se aceptan digitos");
         }
         this.nombre = nombre;
         this.edad = edad;
@@ -29,7 +31,7 @@ public class Empleado {
     }
 
     public void setNombre(String nombre) throws Exception {
-        if (nombre.matches("[A-Za-z]+")) {
+        if (!nombre.matches("[A-Za-z]+")) {
             throw new Exception("Solo se aceptan letras");
         }
         this.nombre = nombre;
@@ -48,8 +50,8 @@ public class Empleado {
     }
 
     public void setNumID(String numID) throws Exception {
-        if (numID.matches("[A-Za-z]+")) {
-            throw new Exception("Solo se aceptan letras");
+        if (!numID.matches("[0-9]+")) {
+            throw new Exception("Solo se aceptan digitos");
         }
         this.numID = numID;
     }

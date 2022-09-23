@@ -1,10 +1,12 @@
 package examen2p2_alberthgodoy;
 
+import java.io.Serializable;
+
 /**
  *
  * @author godoy
  */
-public class Carros {
+public class Carros implements Serializable{
 
     private String Marca;
     private String Modelo;

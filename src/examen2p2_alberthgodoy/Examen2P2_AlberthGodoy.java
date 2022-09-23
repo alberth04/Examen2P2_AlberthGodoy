@@ -24,6 +24,11 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
      */
     public Examen2P2_AlberthGodoy() {
         initComponents();
+        listaEmpleado = new ArrayList();
+        administrarEmpleado admin = new administrarEmpleado("./Nube/empleado.alex");
+        admin.cargarArchivoEmpleado();
+        listaEmpleado = admin.getListaEmpleado();
+        cargarJtableEmpleado(jTable_Empleados, listaEmpleado);
     }
 
     /**
@@ -36,7 +41,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel_CrudEmpleados = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField_NumIdentidad = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -48,32 +53,33 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         jScrollPane_Empleados = new javax.swing.JScrollPane();
         jTable_Empleados = new javax.swing.JTable();
         jButton_CrearEmpleado = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel_CrudEmpleados.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Crear Empleados");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 106, -1));
-        jPanel1.add(jTextField_NumIdentidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, 140, 30));
+        jPanel_CrudEmpleados.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 106, -1));
+        jPanel_CrudEmpleados.add(jTextField_NumIdentidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, 140, 30));
 
         jLabel2.setText("Nombre");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+        jPanel_CrudEmpleados.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         jLabel3.setText("Edad");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 40, -1));
+        jPanel_CrudEmpleados.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 40, -1));
 
         jSpinner_Edad.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
-        jPanel1.add(jSpinner_Edad, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 60, -1));
+        jPanel_CrudEmpleados.add(jSpinner_Edad, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 60, -1));
 
         jLabel4.setText("Numero Identidad");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 40, 100, -1));
-        jPanel1.add(jTextField_NombreEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 140, 30));
+        jPanel_CrudEmpleados.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 40, 100, -1));
+        jPanel_CrudEmpleados.add(jTextField_NombreEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 140, 30));
 
         jLabel5.setText("Eliminar Empleados");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
+        jPanel_CrudEmpleados.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
 
         jTable_Empleados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -85,7 +91,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         ));
         jScrollPane_Empleados.setViewportView(jTable_Empleados);
 
-        jPanel1.add(jScrollPane_Empleados, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 770, 330));
+        jPanel_CrudEmpleados.add(jScrollPane_Empleados, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 770, 330));
 
         jButton_CrearEmpleado.setText("Crear Empleado");
         jButton_CrearEmpleado.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -93,9 +99,17 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
                 jButton_CrearEmpleadoMouseClicked(evt);
             }
         });
-        jPanel1.add(jButton_CrearEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 60, 100, 30));
+        jPanel_CrudEmpleados.add(jButton_CrearEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 60, 100, 30));
 
-        jTabbedPane.addTab("Crear / Eliminar Empleados", jPanel1);
+        jButton1.setText("Eliminar Empleado");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jPanel_CrudEmpleados.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 120, 30));
+
+        jTabbedPane.addTab("Crear / Eliminar Empleados", jPanel_CrudEmpleados);
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jTabbedPane.addTab("Crear/Eliminar Carros", jPanel2);
@@ -126,7 +140,10 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
 
         try {
             //Cargar archivos
+            listaEmpleado = new ArrayList();
             administrarEmpleado admin = new administrarEmpleado("./Nube/empleado.alex");
+            admin.cargarArchivoEmpleado();
+            listaEmpleado = admin.getListaEmpleado();
             String nombre = jTextField_NombreEmpleado.getText();
             int edad = (int) jSpinner_Edad.getValue();
             String numID = jTextField_NumIdentidad.getText();
@@ -140,29 +157,58 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
             }
             //Crear Empleaod
             listaEmpleado.add(new Empleado(nombre, edad, numID, carrosExitos));
-            
+            //Cargar Archivo
+            admin.setListaEmpleado(listaEmpleado);
+            admin.escribirArchivoEmpleado();
+            cargarJtableEmpleado(jTable_Empleados, listaEmpleado);
+            JOptionPane.showMessageDialog(jPanel_CrudEmpleados, "Empleado Creado", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
-            //JOptionPane.showMessageDialog(rootPane, e, title, HEIGHT);
+            JOptionPane.showMessageDialog(jPanel_CrudEmpleados, e, "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_CrearEmpleadoMouseClicked
-    public void cargarJtableEmpleado(JTable jTable, ArrayList<Empleado> listaEmpleados){
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        if (jTable_Empleados.getSelectedRowCount() == 1) {
+            listaEmpleado = new ArrayList();
+            administrarEmpleado admin = new administrarEmpleado("./Nube/empleado.alex");
+            admin.cargarArchivoEmpleado();
+            DefaultTableModel model = (DefaultTableModel) jTable_Empleados.getModel();
+            //Eliminar el empleado seleccionado
+            String numID = (String) model.getValueAt(jTable_Empleados.getSelectedRow(), 2);
+            for (int i = 0; i < listaEmpleado.size(); i++) {
+                Empleado empleadoSelect = listaEmpleado.get(i);
+                if (empleadoSelect.getNumID().equals(numID)) {
+                    listaEmpleado.remove(empleadoSelect);
+                }
+            }
+            //Eliminar de Archivos
+            admin.setListaEmpleado(listaEmpleado);
+            admin.escribirArchivoEmpleado();
+            cargarJtableEmpleado(jTable_Empleados, listaEmpleado);
+            JOptionPane.showMessageDialog(jPanel_CrudEmpleados, "Empleado Removido", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(jPanel_CrudEmpleados, "No selecciono nada", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1MouseClicked
+    public void cargarJtableEmpleado(JTable jTable, ArrayList<Empleado> listaEmpleados) {
         //Agarrar el modelo
-        listaEmpleados = new ArrayList();
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
         model.setRowCount(0);
         for (int i = 0; i < listaEmpleados.size(); i++) {
             Empleado empleadoSelected = listaEmpleados.get(i);
             Object[] newRow = {
-            empleadoSelected.getNombre(),
-            empleadoSelected.getEdad(),
-            empleadoSelected.getNumID(),
-            empleadoSelected.getCantCarrosreparadoExito()
+                empleadoSelected.getNombre(),
+                empleadoSelected.getEdad(),
+                empleadoSelected.getNumID(),
+                empleadoSelected.getCantCarrosreparadoExito()
             };
             model.addRow(newRow);
         }
         jTable.setModel(model);
         jTable.repaint();
+        jTable.updateUI();
     }
+
     /**
      * @param args the command line arguments
      */
@@ -199,15 +245,16 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton_CrearEmpleado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel_CrudEmpleados;
     private javax.swing.JScrollPane jScrollPane_Empleados;
     private javax.swing.JSpinner jSpinner_Edad;
     private javax.swing.JTabbedPane jTabbedPane;

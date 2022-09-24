@@ -467,9 +467,19 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         administrarEmpleado admin = new administrarEmpleado("./Nube/carros.alex");
         admin.cargarArchivoCarros();
         listaCarros = admin.getListaCarros();
+        //Cargar archivos
+        listaEmpleado = new ArrayList();
+        administrarEmpleado admin2 = new administrarEmpleado("./Nube/empleado.alex");
+        admin2.cargarArchivoEmpleado();
+        listaEmpleado = admin2.getListaEmpleado();
         for (Carros listaCarro : listaCarros) {
             if (listaCarro.getID().equals(carroSelect.getID())) {
                 carroSelect = listaCarro;
+            }
+        }
+        for (Empleado listaEmpleado : listaEmpleado) {
+            if (listaEmpleado.getNumID().equals(empleadoSelect.getNumID())) {
+                empleadoSelect = listaEmpleado;
             }
         }
         jProgressBar_CargaSimulacion.setMaximum((int) carroSelect.getCostoReparacion());
@@ -525,53 +535,397 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
 
                 }
                 case "SALDO PAGADO" -> {
-                     carroSelect.setEstadoVehiculo("EN ESPERA DE SER ENTREGADO");
-                        admin.setListaCarros(listaCarros);
-                        admin.escribirArchivoCarros();
-                        cargarJtableCarros(jTable_Carros, listaCarros);
-                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
-                        Bitacora bitacora = new Bitacora(carroSelect, true);
-                        bitacora.start();
+                    carroSelect.setEstadoVehiculo("EN ESPERA DE SER ENTREGADO");
+                    admin.setListaCarros(listaCarros);
+                    admin.escribirArchivoCarros();
+                    cargarJtableCarros(jTable_Carros, listaCarros);
+                    cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                    Bitacora bitacora = new Bitacora(carroSelect, true);
+                    bitacora.start();
                 }
                 case "EN ESPERA DE SER ENTREGADO" -> {
-                   carroSelect.setEstadoVehiculo("ENTREGADO");
-                        admin.setListaCarros(listaCarros);
-                        admin.escribirArchivoCarros();
-                        cargarJtableCarros(jTable_Carros, listaCarros);
-                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
-                        Bitacora bitacora = new Bitacora(carroSelect, true);
-                        bitacora.start();
+                    carroSelect.setEstadoVehiculo("ENTREGADO");
+                    admin.setListaCarros(listaCarros);
+                    admin.escribirArchivoCarros();
+                    cargarJtableCarros(jTable_Carros, listaCarros);
+                    cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                    Bitacora bitacora = new Bitacora(carroSelect, true);
+                    bitacora.start();
                 }
                 case "ENTREGADO" -> {
                     JOptionPane.showMessageDialog(this, "Tenga su carro");
+                    empleadoSelect.setCantCarrosreparadoExito(empleadoSelect.getCantCarrosreparadoExito() + 1);
+                    //Cargar 
+                    admin2.setListaEmpleado(listaEmpleado);
+                    admin2.escribirArchivoEmpleado();
+                    cargarJtableEmpleado(jTable_Empleados, listaEmpleado);
+                    Bitacora bitacora = new Bitacora(carroSelect, true);
+                    bitacora.start();
+
                 }
-            }
+            }//fin switch
         } else if (probabilidad > 0 && probabilidad <= 5) {
             int numRandom = rnd.nextInt(100);
             if (numRandom > 70) {
+                switch (carroSelect.getEstadoVehiculo()) {
+                    case "EN ESPERA" -> {
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("EN REPARACION");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        //Bitacora
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN REPARACION" -> {
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN ESPERA DE PAGO DE REPARACION" -> {
+                        double dineroPagar = Double.parseDouble(JOptionPane.showInputDialog(this, "Pase los billetes de reparacion"));
+                        if (dineroPagar >= carroSelect.getCostoReparacion()) {
+                            //Modificar a Reparacion
+                            carroSelect.setEstadoVehiculo("SALDO PAGADO");
+                            admin.setListaCarros(listaCarros);
+                            admin.escribirArchivoCarros();
+                            cargarJtableCarros(jTable_Carros, listaCarros);
+                            cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                            Bitacora bitacora = new Bitacora(carroSelect, true);
+                            bitacora.start();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "La reparacion vale mas");
+                            //Modificar a Reparacion
+                            carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                            admin.setListaCarros(listaCarros);
+                            admin.escribirArchivoCarros();
+                            cargarJtableCarros(jTable_Carros, listaCarros);
+                            cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                            Bitacora bitacora = new Bitacora(carroSelect, true);
+                            bitacora.start();
+                        }
 
+                    }
+                    case "SALDO PAGADO" -> {
+                        carroSelect.setEstadoVehiculo("EN ESPERA DE SER ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN ESPERA DE SER ENTREGADO" -> {
+                        carroSelect.setEstadoVehiculo("ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "ENTREGADO" -> {
+                        JOptionPane.showMessageDialog(this, "Tenga su carro");
+                        empleadoSelect.setCantCarrosreparadoExito(empleadoSelect.getCantCarrosreparadoExito() + 1);
+                        //Cargar 
+                        admin2.setListaEmpleado(listaEmpleado);
+                        admin2.escribirArchivoEmpleado();
+                        cargarJtableEmpleado(jTable_Empleados, listaEmpleado);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+
+                    }
+                }//fin switch
             } else {
+                //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo(carroSelect.getEstadoVehiculo());
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, false);
+                        //Bitacora
+                        Bitacora bitacora = new Bitacora(carroSelect, false);
+                        bitacora.start();
                 JOptionPane.showMessageDialog(jPanel3, "Fallo la reparacion", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         } else if (probabilidad > 5 && probabilidad <= 15) {
             int numRandom = rnd.nextInt(100);
             if (numRandom > 78) {
+                switch (carroSelect.getEstadoVehiculo()) {
+                    case "EN ESPERA" -> {
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("EN REPARACION");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        //Bitacora
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN REPARACION" -> {
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN ESPERA DE PAGO DE REPARACION" -> {
+                        double dineroPagar = Double.parseDouble(JOptionPane.showInputDialog(this, "Pase los billetes de reparacion"));
+                        if (dineroPagar >= carroSelect.getCostoReparacion()) {
+                            //Modificar a Reparacion
+                            carroSelect.setEstadoVehiculo("SALDO PAGADO");
+                            admin.setListaCarros(listaCarros);
+                            admin.escribirArchivoCarros();
+                            cargarJtableCarros(jTable_Carros, listaCarros);
+                            cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                            Bitacora bitacora = new Bitacora(carroSelect, true);
+                            bitacora.start();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "La reparacion vale mas");
+                            //Modificar a Reparacion
+                            carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                            admin.setListaCarros(listaCarros);
+                            admin.escribirArchivoCarros();
+                            cargarJtableCarros(jTable_Carros, listaCarros);
+                            cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                            Bitacora bitacora = new Bitacora(carroSelect, true);
+                            bitacora.start();
+                        }
 
+                    }
+                    case "SALDO PAGADO" -> {
+                        carroSelect.setEstadoVehiculo("EN ESPERA DE SER ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN ESPERA DE SER ENTREGADO" -> {
+                        carroSelect.setEstadoVehiculo("ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "ENTREGADO" -> {
+                        JOptionPane.showMessageDialog(this, "Tenga su carro");
+                        empleadoSelect.setCantCarrosreparadoExito(empleadoSelect.getCantCarrosreparadoExito() + 1);
+                        //Cargar 
+                        admin2.setListaEmpleado(listaEmpleado);
+                        admin2.escribirArchivoEmpleado();
+                        cargarJtableEmpleado(jTable_Empleados, listaEmpleado);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+
+                    }
+                }//fin switch
             } else {
+                //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo(carroSelect.getEstadoVehiculo());
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, false);
+                        //Bitacora
+                        Bitacora bitacora = new Bitacora(carroSelect, false);
+                        bitacora.start();
                 JOptionPane.showMessageDialog(jPanel3, "Fallo la reparacion", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         } else if (probabilidad > 15 && probabilidad <= 30) {
             int numRandom = rnd.nextInt(100);
             if (numRandom > 87) {
+                switch (carroSelect.getEstadoVehiculo()) {
+                    case "EN ESPERA" -> {
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("EN REPARACION");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        //Bitacora
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN REPARACION" -> {
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN ESPERA DE PAGO DE REPARACION" -> {
+                        double dineroPagar = Double.parseDouble(JOptionPane.showInputDialog(this, "Pase los billetes de reparacion"));
+                        if (dineroPagar >= carroSelect.getCostoReparacion()) {
+                            //Modificar a Reparacion
+                            carroSelect.setEstadoVehiculo("SALDO PAGADO");
+                            admin.setListaCarros(listaCarros);
+                            admin.escribirArchivoCarros();
+                            cargarJtableCarros(jTable_Carros, listaCarros);
+                            cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                            Bitacora bitacora = new Bitacora(carroSelect, true);
+                            bitacora.start();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "La reparacion vale mas");
+                            //Modificar a Reparacion
+                            carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                            admin.setListaCarros(listaCarros);
+                            admin.escribirArchivoCarros();
+                            cargarJtableCarros(jTable_Carros, listaCarros);
+                            cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                            Bitacora bitacora = new Bitacora(carroSelect, true);
+                            bitacora.start();
+                        }
 
+                    }
+                    case "SALDO PAGADO" -> {
+                        carroSelect.setEstadoVehiculo("EN ESPERA DE SER ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN ESPERA DE SER ENTREGADO" -> {
+                        carroSelect.setEstadoVehiculo("ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "ENTREGADO" -> {
+                        JOptionPane.showMessageDialog(this, "Tenga su carro");
+                        empleadoSelect.setCantCarrosreparadoExito(empleadoSelect.getCantCarrosreparadoExito() + 1);
+                        //Cargar 
+                        admin2.setListaEmpleado(listaEmpleado);
+                        admin2.escribirArchivoEmpleado();
+                        cargarJtableEmpleado(jTable_Empleados, listaEmpleado);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+
+                    }
+                }//fin switch
             } else {
+                //Modificar a Reparacion
+                carroSelect.setEstadoVehiculo(carroSelect.getEstadoVehiculo());
+                admin.setListaCarros(listaCarros);
+                admin.escribirArchivoCarros();
+                cargarJtableCarros(jTable_Carros, listaCarros);
+                cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, false);
+                //Bitacora
+                Bitacora bitacora = new Bitacora(carroSelect, false);
+                bitacora.start();
                 JOptionPane.showMessageDialog(jPanel3, "Fallo la reparacion", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         } else if (probabilidad > 30) {
             int numRandom = rnd.nextInt(100);
             if (numRandom > 93) {
+                switch (carroSelect.getEstadoVehiculo()) {
+                    case "EN ESPERA" -> {
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("EN REPARACION");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        //Bitacora
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN REPARACION" -> {
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN ESPERA DE PAGO DE REPARACION" -> {
+                        double dineroPagar = Double.parseDouble(JOptionPane.showInputDialog(this, "Pase los billetes de reparacion"));
+                        if (dineroPagar >= carroSelect.getCostoReparacion()) {
+                            //Modificar a Reparacion
+                            carroSelect.setEstadoVehiculo("SALDO PAGADO");
+                            admin.setListaCarros(listaCarros);
+                            admin.escribirArchivoCarros();
+                            cargarJtableCarros(jTable_Carros, listaCarros);
+                            cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                            Bitacora bitacora = new Bitacora(carroSelect, true);
+                            bitacora.start();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "La reparacion vale mas");
+                            //Modificar a Reparacion
+                            carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                            admin.setListaCarros(listaCarros);
+                            admin.escribirArchivoCarros();
+                            cargarJtableCarros(jTable_Carros, listaCarros);
+                            cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                            Bitacora bitacora = new Bitacora(carroSelect, true);
+                            bitacora.start();
+                        }
 
+                    }
+                    case "SALDO PAGADO" -> {
+                        carroSelect.setEstadoVehiculo("EN ESPERA DE SER ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "EN ESPERA DE SER ENTREGADO" -> {
+                        carroSelect.setEstadoVehiculo("ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+                    case "ENTREGADO" -> {
+                        JOptionPane.showMessageDialog(this, "Tenga su carro");
+                        empleadoSelect.setCantCarrosreparadoExito(empleadoSelect.getCantCarrosreparadoExito() + 1);
+                        //Cargar 
+                        admin2.setListaEmpleado(listaEmpleado);
+                        admin2.escribirArchivoEmpleado();
+                        cargarJtableEmpleado(jTable_Empleados, listaEmpleado);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+
+                    }
+                }//fin switch
             } else {
+                //Modificar a Reparacion
+                carroSelect.setEstadoVehiculo(carroSelect.getEstadoVehiculo());
+                admin.setListaCarros(listaCarros);
+                admin.escribirArchivoCarros();
+                cargarJtableCarros(jTable_Carros, listaCarros);
+                cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, false);
+                //Bitacora
+                Bitacora bitacora = new Bitacora(carroSelect, false);
+                bitacora.start();
                 JOptionPane.showMessageDialog(jPanel3, "Fallo la reparacion", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }

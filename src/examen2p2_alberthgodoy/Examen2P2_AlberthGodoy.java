@@ -657,7 +657,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
             }
         } else if (probabilidad > 5 && probabilidad <= 15) {
             int numRandom = rnd.nextInt(100);
-            if (numRandom > 78) {
+            if (numRandom >= 78) {
                 switch (carroSelect.getEstadoVehiculo()) {
                     case "EN ESPERA" -> {
                         //Modificar a Reparacion
@@ -748,7 +748,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
             }
         } else if (probabilidad > 15 && probabilidad <= 30) {
             int numRandom = rnd.nextInt(100);
-            if (numRandom > 87) {
+            if (numRandom >= 87) {
                 switch (carroSelect.getEstadoVehiculo()) {
                     case "EN ESPERA" -> {
                         //Modificar a Reparacion
@@ -839,7 +839,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
             }
         } else if (probabilidad > 30) {
             int numRandom = rnd.nextInt(100);
-            if (numRandom > 93) {
+            if (numRandom >= 93) {
                 switch (carroSelect.getEstadoVehiculo()) {
                     case "EN ESPERA" -> {
                         //Modificar a Reparacion

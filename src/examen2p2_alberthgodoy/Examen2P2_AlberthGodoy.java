@@ -483,20 +483,67 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
                     //Modificar a Reparacion
                     carroSelect.setEstadoVehiculo("EN REPARACION");
                     admin.setListaCarros(listaCarros);
-                    admin.cargarArchivoCarros();
+                    admin.escribirArchivoCarros();
                     cargarJtableCarros(jTable_Carros, listaCarros);
-                    cargarJtableCarrosSimulacion(jTable_Carros, carroSelect, empleadoSelect, true);
- 
+                    cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                    //Bitacora
+                    Bitacora bitacora = new Bitacora(carroSelect, true);
+                    bitacora.start();
                 }
                 case "EN REPARACION" -> {
+                    //Modificar a Reparacion
+                    carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                    admin.setListaCarros(listaCarros);
+                    admin.escribirArchivoCarros();
+                    cargarJtableCarros(jTable_Carros, listaCarros);
+                    cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                    Bitacora bitacora = new Bitacora(carroSelect, true);
+                    bitacora.start();
                 }
                 case "EN ESPERA DE PAGO DE REPARACION" -> {
+                    double dineroPagar = Double.parseDouble(JOptionPane.showInputDialog(this, "Pase los billetes de reparacion"));
+                    if (dineroPagar >= carroSelect.getCostoReparacion()) {
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("SALDO PAGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "La reparacion vale mas");
+                        //Modificar a Reparacion
+                        carroSelect.setEstadoVehiculo("EN ESPERA DE PAGO DE REPARACION");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
+                    }
+
                 }
                 case "SALDO PAGADO" -> {
+                     carroSelect.setEstadoVehiculo("EN ESPERA DE SER ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
                 }
                 case "EN ESPERA DE SER ENTREGADO" -> {
+                   carroSelect.setEstadoVehiculo("ENTREGADO");
+                        admin.setListaCarros(listaCarros);
+                        admin.escribirArchivoCarros();
+                        cargarJtableCarros(jTable_Carros, listaCarros);
+                        cargarJtableCarrosSimulacion(jTable_Simulacion, carroSelect, empleadoSelect, true);
+                        Bitacora bitacora = new Bitacora(carroSelect, true);
+                        bitacora.start();
                 }
                 case "ENTREGADO" -> {
+                    JOptionPane.showMessageDialog(this, "Tenga su carro");
                 }
             }
         } else if (probabilidad > 0 && probabilidad <= 5) {
@@ -587,10 +634,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     public void cargarJcomboBoxCarrosEspera(JComboBox jCombo, ArrayList<Carros> listaCarros) {
         DefaultComboBoxModel modelCombo = new DefaultComboBoxModel();
         for (int i = 0; i < listaCarros.size(); i++) {
-            Carros carrosSelected = listaCarros.get(i);
-            if (carrosSelected.getEstadoVehiculo().equals("EN ESPERA")) {
-                modelCombo.addElement(listaCarros.get(i));
-            }
+            modelCombo.addElement(listaCarros.get(i));
 
         }
         jCombo.setModel(modelCombo);

@@ -100,6 +100,8 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         jComboBox_AutoReparar = new javax.swing.JComboBox<>();
         jProgressBar_CargaSimulacion = new javax.swing.JProgressBar();
         jButton_SIMULAR = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable_Simulacion = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -265,6 +267,18 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         });
         jPanel1.add(jButton_SIMULAR, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 70, -1));
 
+        jTable_Simulacion.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre Empleado", "Carro Reparar", "Reparacion Exitosa"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable_Simulacion);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 750, 330));
+
         jTabbedPane.addTab("Simulacion", jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -427,6 +441,7 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
             admin.setListaCarros(listaCarros);
             admin.escribirArchivoCarros();
             cargarJtableCarros(jTable_Carros, listaCarros);
+            cargarJcomboBoxCarros(jComboBox_ModificarCarros, listaCarros);
             JOptionPane.showMessageDialog(jPanel3, "Carro Modificado", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(jPanel3, e, "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -447,13 +462,43 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     private void jButton_SIMULARMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_SIMULARMouseClicked
         Carros carroSelect = (Carros) jComboBox_AutoReparar.getSelectedItem();
         Empleado empleadoSelect = (Empleado) jComboBox_EmpleadoReparar.getSelectedItem();
+        //Cargar archivos
+        listaCarros = new ArrayList();
+        administrarEmpleado admin = new administrarEmpleado("./Nube/carros.alex");
+        admin.cargarArchivoCarros();
+        listaCarros = admin.getListaCarros();
+        for (Carros listaCarro : listaCarros) {
+            if (listaCarro.getID().equals(carroSelect.getID())) {
+                carroSelect = listaCarro;
+            }
+        }
         jProgressBar_CargaSimulacion.setMaximum((int) carroSelect.getCostoReparacion());
         HiloProgressBar hilo = new HiloProgressBar(jProgressBar_CargaSimulacion, carroSelect);
         hilo.start();
         Random rnd = new Random();
         int probabilidad = empleadoSelect.getCantCarrosreparadoExito();
         if (probabilidad == 0) {
-            
+            switch (carroSelect.getEstadoVehiculo()) {
+                case "EN ESPERA" -> {
+                    //Modificar a Reparacion
+                    carroSelect.setEstadoVehiculo("EN REPARACION");
+                    admin.setListaCarros(listaCarros);
+                    admin.cargarArchivoCarros();
+                    cargarJtableCarros(jTable_Carros, listaCarros);
+                    cargarJtableCarrosSimulacion(jTable_Carros, carroSelect, empleadoSelect, true);
+ 
+                }
+                case "EN REPARACION" -> {
+                }
+                case "EN ESPERA DE PAGO DE REPARACION" -> {
+                }
+                case "SALDO PAGADO" -> {
+                }
+                case "EN ESPERA DE SER ENTREGADO" -> {
+                }
+                case "ENTREGADO" -> {
+                }
+            }
         } else if (probabilidad > 0 && probabilidad <= 5) {
             int numRandom = rnd.nextInt(100);
             if (numRandom > 70) {
@@ -551,6 +596,27 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
         jCombo.setModel(modelCombo);
     }
 
+    public void cargarJtableCarrosSimulacion(JTable jTable, Carros carroSelected, Empleado empleadoSelected, boolean exito) {
+        //Agarrar el modelo
+        DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+        String exitos = "";
+        if (exito) {
+            exitos = "Si";
+        } else {
+            exitos = "No";
+        }
+        Object[] newRow = {
+            empleadoSelected.getNombre(),
+            carroSelected.getMarca(),
+            exitos
+        };
+        model.addRow(newRow);
+
+        jTable.setModel(model);
+        jTable.repaint();
+        jTable.updateUI();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -617,12 +683,14 @@ public class Examen2P2_AlberthGodoy extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel_CrudEmpleados;
     private javax.swing.JProgressBar jProgressBar_CargaSimulacion;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane_Empleados;
     private javax.swing.JScrollPane jScrollPane_Empleados1;
     private javax.swing.JSpinner jSpinner_Edad;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JTable jTable_Carros;
     private javax.swing.JTable jTable_Empleados;
+    private javax.swing.JTable jTable_Simulacion;
     private javax.swing.JTextField jTextField_CostoReparacion;
     private javax.swing.JTextField jTextField_CostoReparacionModificar;
     private javax.swing.JTextField jTextField_Fecha;
